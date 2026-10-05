@@ -4,12 +4,14 @@ class CustomTextfield extends StatelessWidget {
   final String myHint;
   final TextEditingController txtController;
   final TextInputType keyboardType;
+  final IconData? icon;
 
   const CustomTextfield({
     super.key,
     required this.myHint,
     required this.txtController,
     this.keyboardType = TextInputType.text,
+    this.icon,
   });
 
   @override
@@ -20,11 +22,13 @@ class CustomTextfield extends StatelessWidget {
       decoration: InputDecoration(
         hintText: myHint,
         filled: true,
-        fillColor: Colors.grey.shade100,
+        fillColor: Colors.white.withOpacity(0.9),
+        prefixIcon: icon != null ? Icon(icon, color: Colors.deepPurple) : null,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
         ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       ),
     );
   }
