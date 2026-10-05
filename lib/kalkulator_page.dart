@@ -1,126 +1,103 @@
+import 'package:belajarflutter/components/costum_textfield.dart';
+import 'package:belajarflutter/controller/kalkulator_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class KalkulatorPage extends StatefulWidget {
-  const KalkulatorPage({super.key});
+class CalculatorPage extends StatelessWidget {
+  CalculatorPage({super.key});
 
-  @override
-  State<KalkulatorPage> createState() => _KalkulatorPageState();
-}
+  final KalkulatorController controller = Get.put(KalkulatorController());
 
-class _KalkulatorPageState extends State<KalkulatorPage> {
-  // Controller untuk mengambil nilai dari kolom input
-  final TextEditingController _angka1Controller = TextEditingController();
-  final TextEditingController _angka2Controller = TextEditingController();
+  final TextEditingController txtangka1 = TextEditingController();
+  final TextEditingController txtangka2 = TextEditingController();
 
-  String _hasil = "0";
-
-  // Fungsi untuk menghitung aritmatika
-  void _hitung(String operator) {
-    // Mengubah teks input menjadi angka (double), jika kosong/salah menjadi 0
-    double angka1 = double.tryParse(_angka1Controller.text) ?? 0;
-    double angka2 = double.tryParse(_angka2Controller.text) ?? 0;
-    double hasilHitung = 0;
-
-    setState(() {
-      if (operator == '+') {
-        hasilHitung = angka1 + angka2;
-      } else if (operator == '-') {
-        hasilHitung = angka1 - angka2;
-      } else if (operator == 'x') {
-        hasilHitung = angka1 * angka2;
-      } else if (operator == '/') {
-        // Menghindari error pembagian dengan nol
-        hasilHitung = angka2 == 0 ? 0 : angka1 / angka2;
-      }
-
-      // Menampilkan hasil
-      _hasil = hasilHitung.toString();
-    });
+  bool validasiInput() {
+    if (txtangka1.text.isEmpty || txtangka2.text.isEmpty) {
+      Get.snackbar(
+        "Peringatan",
+        "Angka 1 dan Angka 2 tidak boleh kosong!",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Aritmatika Simple'),
-        backgroundColor: Colors.blueAccent,
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text("My Kalkulator")),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Kolom input Angka 1
-            TextField(
-              controller: _angka1Controller,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Angka Pertama',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
+            CustomTextfield(myHint: "Input angka 1", txtController: txtangka1),
+            const SizedBox(height: 10),
+            CustomTextfield(myHint: "Input angka 2", txtController: txtangka2),
+            const SizedBox(height: 20),
 
-            // Kolom input Angka 2
-            TextField(
-              controller: _angka2Controller,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Angka Kedua',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 32),
-
-            // Baris Tombol Aritmatika
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () => _hitung('+'),
-                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(24)),
-                  child: const Text('+', style: TextStyle(fontSize: 24)),
+                  onPressed: () {
+                    if (validasiInput()) {
+                      controller.tambah(
+                        double.parse(txtangka1.text),
+                        double.parse(txtangka2.text),
+                      );
+                    }
+                  },
+                  child: const Text("Tambah"),
                 ),
                 ElevatedButton(
-                  onPressed: () => _hitung('-'),
-                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(24)),
-                  child: const Text('-', style: TextStyle(fontSize: 24)),
+                  onPressed: () {
+                    if (validasiInput()) {
+                      controller.kurang(
+                        double.parse(txtangka1.text),
+                        double.parse(txtangka2.text),
+                      );
+                    }
+                  },
+                  child: const Text("Kurang"),
                 ),
                 ElevatedButton(
-                  onPressed: () => _hitung('x'),
-                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(24)),
-                  child: const Text('x', style: TextStyle(fontSize: 24)),
+                  onPressed: () {
+                    if (validasiInput()) {
+                      controller.kali(
+                        double.parse(txtangka1.text),
+                        double.parse(txtangka2.text),
+                      );
+                    }
+                  },
+                  child: const Text("Kali"),
                 ),
                 ElevatedButton(
-                  onPressed: () => _hitung('/'),
-                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(24)),
-                  child: const Text('/', style: TextStyle(fontSize: 24)),
+                  onPressed: () {
+                    if (validasiInput()) {
+                      controller.bagi(
+                        double.parse(txtangka1.text),
+                        double.parse(txtangka2.text),
+                      );
+                    }
+                  },
+                  child: const Text("Bagi"),
                 ),
               ],
             ),
-            const SizedBox(height: 48),
 
-            // Tampilan Hasil
-            const Text(
-              'Hasil:',
-              style: TextStyle(fontSize: 20, color: Colors.grey),
-            ),
-            Text(
-              _hasil,
-              style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+            const SizedBox(height: 30),
+
+            // Output Hasil
+            Obx(
+                  () => Text(
+                "Hasil: ${controller.hasilHitung.value}",
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    // Membersihkan memori saat halaman ditutup
-    _angka1Controller.dispose();
-    _angka2Controller.dispose();
-    super.dispose();
   }
 }

@@ -1,7 +1,7 @@
-import 'dart:ui';
-
 import 'package:belajarflutter/components/costum_textfield.dart';
+import 'package:belajarflutter/kalkulator_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,26 +18,26 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("login page")),
+      appBar: AppBar(title: const Text("Login Page")),
       body: Column(
         children: [
           Text(
-            "Welcome to application " + statusLogin,
-            style: TextStyle(
+            "Welcome to application $statusLogin",
+            style: const TextStyle(
               fontSize: 30,
-              color: const Color.fromARGB(255, 46, 9, 182),
+              color: Color.fromARGB(255, 46, 9, 182),
               fontWeight: FontWeight.bold,
             ),
           ),
           Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             child: CustomTextfield(
               myHint: "input username",
               txtController: txtUsername,
             ),
           ),
           Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             child: CustomTextfield(
               myHint: "input password",
               txtController: txtPassword,
@@ -47,23 +47,34 @@ class _LoginPageState extends State<LoginPage> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                // fungsinya untuk reload / refresh satu page full
-                String username = txtUsername.text.toString();
-                String password = txtPassword.text.toString();
+                String username = txtUsername.text;
+                String password = txtPassword.text;
+
                 if (username == "admin" && password == "admin") {
                   statusLogin = "admin";
                   print("sukses login");
+
+                  Get.to(() => CalculatorPage());
+
                 } else {
                   statusLogin = "failed";
                   print("gagal login");
+
+                  Get.snackbar(
+                    "Login Gagal",
+                    "Username atau password salah!",
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
                 }
               });
             },
-            child: Text(
+            child: const Text(
               "Login",
               style: TextStyle(
                 fontSize: 30,
-                color: const Color.fromARGB(255, 30, 175, 44),
+                color: Color.fromARGB(255, 30, 175, 44),
                 fontWeight: FontWeight.bold,
               ),
             ),
