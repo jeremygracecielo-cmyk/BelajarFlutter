@@ -19,13 +19,15 @@ class DetailMakananPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                controller.makanan.gambarPath,
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.contain,
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.asset(
+                  controller.makanan.gambarPath,
+                  height: 250,
+                  width: 250,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             SizedBox(height: 20),
