@@ -55,7 +55,6 @@ class RegistrationPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 30),
 
-                    // Input dengan Ikon
                     CustomTextfield(
                       myHint: "Nama Lengkap",
                       txtController: txtNamaLengkap,
