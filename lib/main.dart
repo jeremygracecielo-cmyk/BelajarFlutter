@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:belajarflutter/kalkulator_page.dart';
-import 'package:belajarflutter/login_page_dart.dart';
 import 'package:belajarflutter/routes.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -11,12 +9,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Belajar Flutter GetX",
-      initialRoute: Routes.list_makanan,
+      debugShowCheckedModeBanner: false,
+      title: 'Belajar Flutter GetX',
+      initialRoute: Routes.login_page,
       getPages: Routes.myPages,
     );
   }
