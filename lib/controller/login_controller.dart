@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:belajarflutter/models/login_model.dart';
 import 'package:belajarflutter/pages/main_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +8,8 @@ class LoginController extends GetxController {
   TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
   var isLoading = false.obs;
+
+  var loginModel = Rxn<Welcome>();
 
   void login() async {
     if (txtUsername.text.toString().isEmpty ||
@@ -25,12 +27,13 @@ class LoginController extends GetxController {
 
         isLoading.value = false;
         if (response.statusCode == 200) {
-          final data = jsonDecode(response.body);
-          if (data['status'] == true) {
-            Get.snackbar("berhasil", data['message']);
+          loginModel.value = welcomeFromJson(response.body);
+
+          if (loginModel.value?.status == true) {
+            Get.snackbar("berhasil", loginModel.value?.message ?? "");
             Get.off(() => MainMenu());
           } else {
-            Get.snackbar("gagal", data['message']);
+            Get.snackbar("gagal", loginModel.value?.message ?? "");
           }
         } else {
           Get.snackbar("gagal", "cek internet connection");

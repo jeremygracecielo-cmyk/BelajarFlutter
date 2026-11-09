@@ -5,6 +5,8 @@ class CustomTextfield extends StatelessWidget {
   final TextEditingController txtController;
   final TextInputType keyboardType;
   final IconData? icon;
+  final IconData? suffixIcon;
+  final bool obscureText;
 
   const CustomTextfield({
     super.key,
@@ -12,6 +14,8 @@ class CustomTextfield extends StatelessWidget {
     required this.txtController,
     this.keyboardType = TextInputType.text,
     this.icon,
+    this.suffixIcon,
+    this.obscureText = false,
   });
 
   @override
@@ -19,16 +23,31 @@ class CustomTextfield extends StatelessWidget {
     return TextField(
       controller: txtController,
       keyboardType: keyboardType,
+      obscureText: obscureText,
+      style: const TextStyle(fontSize: 13),
       decoration: InputDecoration(
         hintText: myHint,
+        hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.9),
-        prefixIcon: icon != null ? Icon(icon, color: Colors.deepPurple) : null,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
+        fillColor: const Color(0xFFF7F7F7),
+        prefixIcon: icon != null
+            ? Icon(icon, color: Colors.grey[600], size: 20)
+            : null,
+        suffixIcon: suffixIcon != null
+            ? Icon(suffixIcon, color: Colors.grey[600], size: 20)
+            : null,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: const BorderSide(color: Color(0xFFDBDBDB), width: 1),
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: const BorderSide(color: Colors.grey, width: 1),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 14,
+          horizontal: 14,
+        ),
       ),
     );
   }
